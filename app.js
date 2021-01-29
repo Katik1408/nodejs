@@ -4,23 +4,22 @@ app = express();
 const students = require("./routes/students");
 const mongoose = require("mongoose");
 
-//type Mongoose = typeof mongoose
 
-mongoose
-  .connect("mongodb://localhost/demodb", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Connection Successfull");
-  })
-  .catch((err) => console.log(err));
+// mongoose
+//   .connect("mongodb://localhost/demodb", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => {
+//     console.log("Connection Successfull");
+//   })
+//   .catch((err) => console.log(err));
 
-const studentSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  age: { type: Number, required: true },
-  place: { type: String, required: true },
-});
+// const studentSchema = new mongoose.Schema({
+//   name: { type: String, required: true },
+//   age: { type: Number, required: true },
+//   place: { type: String, required: true },
+// });
 
 /**
    
@@ -28,18 +27,38 @@ const studentSchema = new mongoose.Schema({
           students  	---- 	Student
    */
 
-const Student = mongoose.model("Student", studentSchema);
+//const Student = mongoose.model("Student", studentSchema);
 
-const newStudentDoc = new Student({
-  name: "Rahul",
-  age: 22,
-  place: "Delhi",
-});
+// async function createStudent() {
+//   const newStudentDoc = new Student({
+//     name: "Suresh",
+//     age: 22,
+//     place: "Delhi",
+//   });
+//   await newStudentDoc
+//     .save()
+//     .then(() => console.log("Inserted Successfully"))
+//     .catch((err) => console.log(err));
+// }
 
-newStudentDoc
-  .save()
-  .then(() => console.log("Inserted Successfully"))
-  .catch((err) => console.log(err));
+//createStudent();
+
+// async function getStudents() 
+//  { const student = await Student.find({age : {$lte : 25}}).limit(10).sort({name: 1});
+//   console.log(student);
+// }
+// getStudents();
+
+//eq euqals
+//lt less than
+//lte less than or equal to
+//gt greater than
+//gte greater than or equal to
+//in
+//nin (not in)
+
+
+
 
 app.set("view engine", "pug");
 app.set("views", "./views");
@@ -66,3 +85,22 @@ app.listen(3000, () => {
   console.log("Listeing on port 3000");
 });
 
+/**
+ * eq
+ * ne
+ * gt
+ * gte
+ * lt
+ * lte
+ * in
+ * nin
+ */
+/**
+ * async function getStudents() {
+  const student = await Student.find({ place: {$eq:"Bangalore"} })
+    .limit(10)
+    .sort({ name: 1 }).select({name:1,place:1});
+    console.log(student);
+}
+getStudents();
+ */
