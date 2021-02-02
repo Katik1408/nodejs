@@ -3,8 +3,8 @@ const logger = require("./middleware/logging");
 app = express();
 const students = require("./routes/students");
 const mongoose = require("mongoose");
-
-
+//const createMiddleware = require('@apidevtools/swagger-express-middleware');
+const pathToSwaggerUi = require('swagger-ui-dist').absolutePath()
 // mongoose
 //   .connect("mongodb://localhost/demodb", {
 //     useNewUrlParser: true,
@@ -64,10 +64,30 @@ app.set("view engine", "pug");
 app.set("views", "./views");
 app.set("hello", "Now this is new value");
 
+app.use(express.static(pathToSwaggerUi))
+// createMiddleware('Students.yaml', app, function(err, middleware) {
+//   // Add all the Swagger Express Middleware, or just the ones you need.
+//   // NOTE: Some of these accept optional options (omitted here for brevity)
+//   app.use(
+//       middleware.metadata(),
+//       middleware.CORS(),
+//       middleware.files(),
+//       middleware.parseRequest(),
+//       middleware.validateRequest(),
+//       middleware.mock()
+//   );
+
+//   });
+
 app.use(express.json());
 app.use(logger);
 app.use(express.static("public"));
 app.use("/api/students", students);
+
+
+
+
+
 
 app.get("/", (req, res) => {
   res.render("index", {

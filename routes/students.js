@@ -1,7 +1,10 @@
+const { stderr } = require("chalk");
 const express = require("express");
+const { func } = require("joi");
 const router = express.Router();
 const Joi = require("joi");
 const Student = require("../models/studentsmodel");
+
 
 let students = [
   { id: 1, name: "Prasanna" },
@@ -10,9 +13,26 @@ let students = [
 ];
 
 router.get("/", (req, res) => {
-  const student = Student.find().sort({name:1}).limit(10);
-  //res.json(student);
-  //res.send(JSON.stringify(student));
+  // student : any;
+
+   res.send(Student.find()
+    .sort({ name: 1 })
+    .limit(10)
+    .exec(function (err, student) {
+      console.log("----Error Response-----");
+      console.log(err);
+      //res.send(student);
+      console.log("-----Student Response-----");
+      console.log(student);
+    })).json();
+    res.end();
+  // let a = JSON.stringify(student)
+  if (student == null) {
+    res.status(404).json("Students not found");
+    res.end();
+  }
+  res.json(student);
+  // res.send(JSON.stringify(student));
   res.end();
 });
 
