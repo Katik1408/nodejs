@@ -5,40 +5,36 @@ const router = express.Router();
 const Joi = require("joi");
 const Student = require("../models/studentsmodel");
 
+// let students = [
+//   { id: 1, name: "Prasanna" },
+//   { id: 2, name: "Kartik" },
+//   { id: 3, name: "Manohar" },
+// ];
 
-let students = [
-  { id: 1, name: "Prasanna" },
-  { id: 2, name: "Kartik" },
-  { id: 3, name: "Manohar" },
-];
+
+
+
+
 
 router.get("/", (req, res) => {
-  // student : any;
-
-   res.send(Student.find()
-    .sort({ name: 1 })
-    .limit(10)
-    .exec(function (err, student) {
-      console.log("----Error Response-----");
-      console.log(err);
-      //res.send(student);
-      console.log("-----Student Response-----");
-      console.log(student);
-    })).json();
+  Student.find((err,students)=>{
+    res.send(students);
     res.end();
-  // let a = JSON.stringify(student)
-  if (student == null) {
-    res.status(404).json("Students not found");
-    res.end();
-  }
-  res.json(student);
-  // res.send(JSON.stringify(student));
-  res.end();
+  }).sort({name:1});
 });
 
-router.get("/:studentId", (req, res) => {
-  let student = students.find((c) => c.id === parseInt(req.params.studentId));
-
+router.get("/:name", (req, res) => {
+  // let student = Student.findOne({name:req.params.name},(err,doc)=>{
+  //   if(err!== null){
+  //     res.send(err);
+  //     res.end();
+  //   }
+  //   res.send(doc);
+  //   res.end();
+  // });
+//Student.findOneAndUpdate
+let student = Student.findOne({name:req.params.name});
+console.log(student);
   if (!student) {
     res.status(404);
     res.send(

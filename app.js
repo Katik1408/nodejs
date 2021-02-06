@@ -3,8 +3,9 @@ const logger = require("./middleware/logging");
 app = express();
 const students = require("./routes/students");
 const mongoose = require("mongoose");
+
 //const createMiddleware = require('@apidevtools/swagger-express-middleware');
-const pathToSwaggerUi = require('swagger-ui-dist').absolutePath()
+////const pathToSwaggerUi = require('swagger-ui-dist').absolutePath()
 // mongoose
 //   .connect("mongodb://localhost/demodb", {
 //     useNewUrlParser: true,
@@ -56,7 +57,26 @@ const pathToSwaggerUi = require('swagger-ui-dist').absolutePath()
 //gte greater than or equal to
 //in
 //nin (not in)
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
+const swaggerOptions = {
+  swaggerDefinition:{
+    info:{
+      title:'Students API',
+      description:'Students API Information',
+      contact:{
+        name:"Amazing Developer"
+      },
+      servers:["http://localhost:3000"]
+    }
+  },
+  apis:["app.js"]
+};
+
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(swaggerDocs));
 
 
 
@@ -64,7 +84,7 @@ app.set("view engine", "pug");
 app.set("views", "./views");
 app.set("hello", "Now this is new value");
 
-app.use(express.static(pathToSwaggerUi))
+//app.use(express.static(pathToSwaggerUi))
 // createMiddleware('Students.yaml', app, function(err, middleware) {
 //   // Add all the Swagger Express Middleware, or just the ones you need.
 //   // NOTE: Some of these accept optional options (omitted here for brevity)
@@ -85,6 +105,84 @@ app.use(express.static("public"));
 app.use("/api/students", students);
 
 
+// Annotation -- @swagger
+
+/**
+ * @swagger
+ * definitions:
+ *    Student:
+ *     type: Object
+ *     properties:
+ *      name:
+ *        type: String
+ *        description: name of the student
+ *        example: 'Karthik Saxena'
+ *      age:
+ *        type: number
+ *        description: Age of the student
+ *        example: 25
+ *      place:
+ *        type: String
+ *        description: Place of the student
+ *        example: 'Bangalore'
+ * 
+ */
+
+
+
+ /**
+  * 
+  * THis is comment
+  */
+
+
+
+//Routes 
+/**
+ * @swagger
+ * /api/students:
+ *  get:
+ *     description: Use to request all students
+ *     responses:
+ *          '200':
+ *           description: A Successful response
+ *  
+ * 
+ */
+
+
+
+ /**
+  * @swagger
+  * /api/students:
+  *  get:
+  *     description: Used to request something
+  *     responses:
+  *         '201':
+  *           description: This is success
+  * 
+  */
+
+
+
+
+/**
+ * @swagger
+ * /api/students:
+ *  post:
+ *     summary: Create Student
+ *     description: Use to Create new Students
+ *     requestBody:
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref:'#definition/Student'
+ *     responses:
+ *          201:
+ *           description: A Successful response
+ *          500:
+ *            description: Internal Server Error
+ */ 
 
 
 
@@ -101,13 +199,16 @@ app.get("/h1", (req, res) => {
   res.send(app.get("hello"));
 });
 
-app.listen(3000, () => {
-  console.log("Listeing on port 3000");
+
+const port = process.env.PORT || 3000
+
+app.listen(port, () => {
+  console.log(`Listeing on port ${port}`);
 });
 
 /**
  * eq
- * ne
+ * ne 
  * gt
  * gte
  * lt
