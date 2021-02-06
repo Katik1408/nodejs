@@ -1,9 +1,11 @@
+const { object } = require("joi");
 const mongoose = require("mongoose");
 
 mongoose
   .connect("mongodb://localhost/demodb", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify:true
   })
   .then(() => {
     console.log("Connection Successfull");
@@ -12,6 +14,7 @@ mongoose
 
 const studentSchema = new mongoose.Schema(
   {
+    // id: { type: Object },
     name: { type: String, required: true },
     age: { type: Number, required: true },
     place: { type: String, required: true },

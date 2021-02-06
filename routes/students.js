@@ -1,6 +1,6 @@
 const { stderr } = require("chalk");
 const express = require("express");
-const { func } = require("joi");
+const { func, any, number } = require("joi");
 const router = express.Router();
 const Joi = require("joi");
 const Student = require("../models/studentsmodel");
@@ -11,16 +11,15 @@ const Student = require("../models/studentsmodel");
 //   { id: 3, name: "Manohar" },
 // ];
 
-
-
-
-
-
 router.get("/", (req, res) => {
-  Student.find((err,students)=>{
-    res.send(students);
-    res.end();
-  }).sort({name:1});
+  try {
+    Student.find((err, students) => {
+      res.send(students);
+      res.end();
+    }).sort({ name: 1 });
+  } catch {
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 router.get("/:name", (req, res) => {
@@ -32,9 +31,9 @@ router.get("/:name", (req, res) => {
   //   res.send(doc);
   //   res.end();
   // });
-//Student.findOneAndUpdate
-let student = Student.findOne({name:req.params.name});
-console.log(student);
+  //Student.findOneAndUpdate
+  let student = Student.findOne({ name: req.params.name });
+  console.log(student);
   if (!student) {
     res.status(404);
     res.send(
@@ -88,35 +87,58 @@ router.post("/", (req, res) => {
   res.send(students);
 });
 
-router.put("/:studentId", (req, res) => {
+router.put("/:id", (req, res) => {
   //Checked if the student exist or not
-  let student = students.find((c) => c.id === parseInt(req.params.studentId));
+  //let student = students.find((c) => c.id === parseInt(req.params.studentId));
+  console.log("Logging id from Request");
+  console.log(req.params.id);
 
-  if (!student) {
-    res
-      .status(404)
-      .send(
-        `Error Occurend Student with ${req.params.studentId} is not available`
-      )
-      .end();
-  }
+  console.log("Log End");
+  st: any;
+  let s = Student.findById(req.params.id, (err, std) => {
+    st = std;
+    res.send(std);
+    res.end();
+  });
+
+  Student.findByIdAndUpdate(
+    req.params.id,
+    {
+      name: req.body.name,
+      age: req.body.age,
+      place: req.body.place,
+    },
+    { rawResult: true },
+    (err, student) => {
+      console.log(student);
+      res.send(student);
+    }
+  );
+  // if (!st) {
+  //   res
+  //     .status(404)
+  //     .send(
+  //       `Error Occurend Student with ${req.params.id} is not available`
+  //     )
+  //     .end();
+  //}
 
   //Validate the name
 
-  const schema = Joi.object({
-    name: Joi.string().min(3).required(),
-  });
+  // const schema = Joi.object({
+  //   name: Joi.string().min(3).required(),
+  // });
 
-  let { error } = schema.validate(req.body);
+  // let { error } = schema.validate(req.body);
 
-  console.log(error);
+  // console.log(error);
 
-  if (error) {
-    res.status(400).send(error.details[0].message);
-    return;
-  }
-  student.name = req.body.name;
-  res.send(students);
+  // if (error) {
+  //   res.status(400).send(error.details[0].message);
+  //   return;
+  // }
+  // student.name = req.body.name;
+  // res.send(students);
 });
 
 router.delete("/:studentId", (req, res) => {
