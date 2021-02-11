@@ -76,7 +76,7 @@ const swaggerOptions = {
 
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(swaggerDocs));
+app.use("/index",swaggerUi.serve,swaggerUi.setup(swaggerDocs));
 
 
 
@@ -185,7 +185,25 @@ app.use("/api/students", students);
  */ 
 
 
-
+/**
+ * @swagger
+ * /api/students/{studentId}:
+ *  parameters: 
+ *   - in : path
+ *     name: studentId
+ *     type: string
+ *     required: true
+ *  delete:
+ *      summary: It will delete the students
+ *      description: Delete Students
+ *      responses:
+ *          200:
+ *            description: Successful Deletion
+ *          500:
+ *            description: Internal Server Error
+ * 
+ * 
+ */
 
 app.get("/", (req, res) => {
   res.render("index", {

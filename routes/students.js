@@ -143,21 +143,29 @@ router.put("/:id", (req, res) => {
 
 router.delete("/:studentId", (req, res) => {
   //Checked if the student exist or not
-  let student = students.find((c) => c.id === parseInt(req.params.studentId));
+  //let student = students.find((c) => c.id === parseInt(req.params.studentId));
 
-  if (!student) {
-    res
-      .status(404)
-      .send(
-        `Error Occurend Student with ${req.params.studentId} is not available`
-      )
-      .end();
-  }
+  Student.findByIdAndDelete(
+    req.params.studentId,
+    (err, student) => {
+      res.send(student);
+      res.end();
+    }
+  );
 
-  const indexOfStudent = students.indexOf(student);
-  console.log(students);
-  students.splice(indexOfStudent, 1);
-  res.send(students);
+  // if (!student) {
+  //   res
+  //     .status(404)
+  //     .send(
+  //       `Error Occurend Student with ${req.params.studentId} is not available`
+  //     )
+  //     .end();
+  // }
+
+  // const indexOfStudent = students.indexOf(student);
+  // console.log(students);
+  // students.splice(indexOfStudent, 1);
+  // res.send(students);
 });
 
 module.exports = router;

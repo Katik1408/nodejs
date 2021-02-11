@@ -5,7 +5,7 @@ mongoose
   .connect("mongodb://localhost/demodb", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify:true
+    useFindAndModify:false
   })
   .then(() => {
     console.log("Connection Successfull");
