@@ -3,6 +3,7 @@ const logger = require("./middleware/logging");
 app = express();
 const students = require("./routes/students");
 const mongoose = require("mongoose");
+const cors = require('cors');
 
 //const createMiddleware = require('@apidevtools/swagger-express-middleware');
 ////const pathToSwaggerUi = require('swagger-ui-dist').absolutePath()
@@ -74,12 +75,11 @@ const swaggerOptions = {
   apis:["app.js"]
 };
 
-
+//Middlewares inside APIs
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use(cors());
 app.use("/index",swaggerUi.serve,swaggerUi.setup(swaggerDocs));
-
-
-
+  
 app.set("view engine", "pug");
 app.set("views", "./views");
 app.set("hello", "Now this is new value");

@@ -22,7 +22,7 @@ router.get("/", (req, res) => {
   }
 });
 
-router.get("/:name", (req, res) => {
+router.get("/:id", (req, res) => {
   // let student = Student.findOne({name:req.params.name},(err,doc)=>{
   //   if(err!== null){
   //     res.send(err);
@@ -32,7 +32,11 @@ router.get("/:name", (req, res) => {
   //   res.end();
   // });
   //Student.findOneAndUpdate
-  let student = Student.findOne({ name: req.params.name });
+  let student = Student.findById({_id : req.params.id}, (data) => {
+    res.send(data);
+    res.end();
+  });
+
   console.log(student);
   if (!student) {
     res.status(404);
@@ -84,7 +88,7 @@ router.post("/", (req, res) => {
     .catch((err) => console.log(err));
 
   // students.push(student);
-  res.send(students);
+  res.send(student);
 });
 
 router.put("/:id", (req, res) => {
@@ -145,13 +149,10 @@ router.delete("/:studentId", (req, res) => {
   //Checked if the student exist or not
   //let student = students.find((c) => c.id === parseInt(req.params.studentId));
 
-  Student.findByIdAndDelete(
-    req.params.studentId,
-    (err, student) => {
-      res.send(student);
-      res.end();
-    }
-  );
+  Student.findByIdAndDelete(req.params.studentId, (err, student) => {
+    res.send(student);
+    res.end();
+  });
 
   // if (!student) {
   //   res
