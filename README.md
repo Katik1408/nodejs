@@ -28,9 +28,13 @@ Step 1. Create Database whose name will be "demodb"  (without quotes)
 Step 2. Create a Collection with name "students" (without quotes)
 
 Step 3. Create few documets where columns will be 
+
         a. name
+
         b. age
+
         c. place
+
         
 After this test this nodejs api on Browser or PostMan it should return you that MongoDB stored data in JSON Format.
 
