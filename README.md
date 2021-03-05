@@ -1,11 +1,17 @@
 # NodeJS
 
-To Run thi Application
+To Run this Application go to the Terminal and run the following commands
 
 Step 1   :  npm install
-Step 2   :  nodemon app.js
+
+Step 2    : npm install nodemon
+
+Step 3   :  nodemon app.js
+
+After You see the message as Listening on Port 3000 on Terminal 
 
 go to http://localhost:3000/api/students
+
 For Swaggerr
 Go to http://localhost:3000/index/
 
